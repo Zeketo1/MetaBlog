@@ -132,6 +132,7 @@ const signupWithGoogle = () => {
   signInWithPopup(auth, provider)
     .then(() => {
       showToast(`Success! Welcome back ${username}!`, "success");
+      window.location.href = "/create";
     })
     .catch((error) => {
       showToast(`Google sign-in failed: ${error.message}`, "error");
