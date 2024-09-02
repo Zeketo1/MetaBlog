@@ -23,7 +23,7 @@ const Footer = () => {
           dark ? "bg-[#242535fb] text-white" : "bg-[#F6F6F7] text-black"
         }`}
       >
-        <div className="flex justify-between px-3 py-5 sm:px-8">
+        <div className="flex flex-wrap gap-3 sm:gap-0 justify-between px-3 py-5 sm:px-8">
           <div>
             <div className="mb-4">
               <h1 className="text-[17px] font-semibold mb-3">About</h1>
@@ -98,7 +98,7 @@ const Footer = () => {
         <div
           className={`${
             dark ? "border-t border-white" : "border-t border-black"
-          } flex items-center justify-between px-3 py-3 sm:px-8`}
+          } flex flex-wrap gap-3 items-center justify-between px-3 py-3 sm:px-8`}
         >
           <div className="flex items-center gap-1">
             <img
@@ -118,7 +118,10 @@ const Footer = () => {
               </p>
             </div>
           </div>
-          <div className="flex gap-4 text-[14px]">
+          <p className="block sm:hidden">Terms of Use</p>
+          <p className="block sm:hidden">Privacy Policy</p>
+          <p className="block sm:hidden">Cookie Policy</p>
+          <div className="gap-4 text-[14px] hidden sm:flex ">
             <p>Terms of Use</p>
             <p>Privacy Policy</p>
             <p>Cookie Policy</p>
