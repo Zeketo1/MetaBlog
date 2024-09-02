@@ -2,9 +2,11 @@ import React, { useContext } from "react";
 import { CiMail } from "react-icons/ci";
 import { LogoS, LogoS2 } from "..";
 import { blogContext } from "../context/BlogContextProvider";
+import { useStore } from "eoion";
+import store from "../store/store";
 
 const Footer = () => {
-  const { dark } = useContext(blogContext);
+  const [dark] = useStore(store.subscribe("dark"));
   const quicklinks = ["Home", "About", "Blog", "Archived", "Author", "Contact"];
   const category = [
     "Lifestyle",
@@ -25,11 +27,11 @@ const Footer = () => {
           <div>
             <div className="mb-4">
               <h1 className="text-[17px] font-semibold mb-3">About</h1>
-              <p className="opacity-80 text-[13px] sm:text-[15px]">
-                Lorem ipsum dolor sit amet, <br /> consectetur adipiscing elit,
-                sed do <br />
-                eiusmod tempor incididunt ut labore <br /> et dolore magna
-                aliqua. Ut enim ad <br /> minim veniam
+              <p className="opacity-80 text-[13px] sm:text-[15px] w-[300px]">
+                We're a blog dedicated to sharing insights and stories on
+                various topics. Whether you're here to learn, explore, or simply
+                enjoy a good read, we're glad you're with us. Thanks for being
+                part of our journey!
               </p>
             </div>
             <div className="font-semibold">

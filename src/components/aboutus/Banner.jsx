@@ -1,8 +1,11 @@
 import React, { useContext } from "react";
 import { blogContext } from "../../context/BlogContextProvider";
+import store from "../../store/store";
+import { useStore } from "eoion";
 
 const Banner = () => {
-    const {dark} = useContext(blogContext)
+  const [dark] = useStore(store.subscribe("dark"));
+  
   return (
     <>
       <div className={`transition duration-500 ${dark ? "bg-[#242535ec] text-white" : "bg-[#6b728027] text-black"} min-h-[400px]`}>

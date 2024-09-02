@@ -6,9 +6,11 @@ import { blogContext } from "../context/BlogContextProvider";
 import { WiStars } from "react-icons/wi";
 import { CiMenuFries } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
+import store from "../store/store";
+import { useStore } from "eoion";
 
 const NavBar = () => {
-  const { dark, setDark } = useContext(blogContext);
+  const [dark, setDark] = useStore(store.subscribe("dark"));
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -31,7 +33,7 @@ const NavBar = () => {
   return (
     <>
       <div
-        className={`shadow-lg transition duration-500 px-2 py-3 z-10 ${
+        className={`h-[10dvh] shadow-lg transition duration-500 px-2 py-3 z-10 ${
           dark ? "bg-[#242535] text-white" : "bg-white text-black"
         } flex items-center font-poppins sticky top-0 right-0 justify-between`}
       >

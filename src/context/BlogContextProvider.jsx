@@ -6,8 +6,8 @@ const blogContext = createContext(null);
 
 const BlogContextProvider = ({ children }) => {
   const [dark, setDark] = useState(false);
-  
   const [blogs, setblogs] = useState([]);
+  const [imageUrl, setImageUrl] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(colBlogs, (snapshot) => {
@@ -18,7 +18,6 @@ const BlogContextProvider = ({ children }) => {
         }));
 
         setblogs(blogsArray);
-        
       } catch (e) {
         console.log(e.message);
       }
@@ -27,9 +26,11 @@ const BlogContextProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
   console.log(dark);
-  
+
   return (
-    <blogContext.Provider value={{blogs, dark, setDark }}>
+    <blogContext.Provider
+      value={{ blogs, dark, setDark, imageUrl, setImageUrl }}
+    >
       {children}
     </blogContext.Provider>
   );

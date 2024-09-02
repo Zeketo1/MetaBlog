@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,16 +24,60 @@
   text-shadow: 0 10px 10px black;
 }
 
-/* body::-webkit-scrollbar {
-  background: white;
+.scroll__style__light::-webkit-scrollbar {
+  background: transparent;
 }
 
-body::-webkit-scrollbar-thumb {
+.scroll__style__light::-webkit-scrollbar-thumb {
   border-radius: 50px;
-  background: linear-gradient(90deg, #01284e 0%,   rgba(14, 0, 53, 0.944)  100%);
+  background: linear-gradient(90deg, #0067a3 0%, rgba(1, 40, 78, 0.944) 100%);
 }
 
-body::-webkit-scrollbar-track {
-  background: linear-gradient(90deg, rgba(14, 0, 53, 0.944) 0%, #01284e 100%);
+.scroll__style__dark::-webkit-scrollbar {
+  background: transparent;
+}
 
-} */
+.scroll__style__dark::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  background: linear-gradient(90deg, #195f90 0%, rgba(14, 0, 53, 0.944) 100%);
+}
+
+.translate {
+  animation: translate .3s linear;
+}
+
+@keyframes translate {
+  from {
+    transform: translateX(100px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.translateB {
+  right: -70px;
+  animation: translateB .3s linear;
+}
+
+@keyframes translateB {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100);
+  }
+}
+
+.auth__grid {
+  display: grid;
+  grid-template-columns: 30% 70%;
+}
+
+.auth__left {
+  clip-path: polygon(0 0, 100% 0, 70% 100%, 0% 100%);
+}
+
+.auth__right {
+  clip-path: polygon(30% 0, 100% 0, 100% 100%, 0% 100%);
+}

@@ -5,9 +5,12 @@ import { blogContext } from "../context/BlogContextProvider";
 import { Link } from "react-router-dom";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { imageDB } from "../firebase";
+import { useStore } from "eoion";
+import store from "../store/store";
 
 const Blogs = () => {
-  const { dark, blogs } = useContext(blogContext);
+  const [dark] = useStore(store.subscribe("dark"));
+  const { blogs } = useContext(blogContext);
   const [imageUrl, setImageUrl] = useState([]);
   const [isloading, setisloading] = useState(true);
 
@@ -84,16 +87,16 @@ const Blogs = () => {
             );
             return (
               i === index && (
-                <div className="relative h-full w-full flex items-end">
+                <div key={i} className="relative h-full w-full flex items-end">
                   <motion.img
                     // variants={container(100, 1)}
                     // initial="hidden"
                     // animate="visible"
-                    initial={{ opacity: 0 }}
-                    animate={{
-                      opacity: 1,
-                      transition: { duration: 0.5, delay: 0.5 },
-                    }}
+                    // initial={{ opacity: 0 }}
+                    // animate={{ 
+                    //   opacity: 1,
+                    //   transition: { duration: 0.5, delay: 0.5 },
+                    // }}
                     src={matchingImage}
                     alt=""
                     className="absolute object-cover w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[480px]"

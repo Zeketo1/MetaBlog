@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import { LampContainer } from "./LampContainer";
 import { LampContainerLight } from "./LampContainerLight";
 import { blogContext } from "../context/BlogContextProvider";
+import { useStore } from "eoion";
+import store from "../store/store";
 
 export function LampDemo({ text }) {
-  const { dark } = useContext(blogContext);
+  const [dark] = useStore(store.subscribe("dark"));
 
   return dark ? (
     <LampContainer>

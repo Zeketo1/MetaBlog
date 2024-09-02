@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import { Hands, Teamwork } from "../..";
 import { blogContext } from "../../context/BlogContextProvider";
+import store from "../../store/store";
+import { useStore } from "eoion";
 
 const Lifestyle = () => {
-    const { dark } = useContext(blogContext);
+  const [dark] = useStore(store.subscribe("dark"));
   return (
     <>
       <div className={`py-10 px-5 transition-all duration-500 ${dark ? "bg-[#242535] text-white" : "bg-white text-black"} flex flex-col gap-5`}>

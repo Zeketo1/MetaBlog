@@ -4,12 +4,14 @@ import SkeletonCards from "../../utils/skeleton/SkeletonCards";
 import { Link } from "react-router-dom";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { imageDB } from "../../firebase";
+import store from "../../store/store";
+import { useStore } from "eoion";
 
 const BlogsList = () => {
-  const { dark, blogs } = useContext(blogContext);
+  const [dark] = useStore(store.subscribe("dark"));
+  const { blogs, imageUrl, setImageUrl } = useContext(blogContext);
   const blogsFiltered = blogs.slice(0, 9);
   const [isloading, setisloading] = useState(true);
-  const [imageUrl, setImageUrl] = useState([]);
 
   const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"];
 
@@ -52,7 +54,6 @@ const BlogsList = () => {
               const matchingImage = imageUrl.find((url) =>
                 url.includes(`${id}.`)
               );
-              console.log(matchingImage);
               return (
                 <Link
                   to={`/blogs/${id}`}
@@ -101,13 +102,13 @@ const BlogsList = () => {
           )}
         </div>
       </div>
-      <div
+      <Link to="/blogs"
         className={`py-1 px-3 border-2 ${
           dark ? "border-[#ffffff93]" : "border-[#00000093]"
         } rounded-md`}
       >
         View All Post
-      </div>
+      </Link>
     </div>
   );
 };

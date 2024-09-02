@@ -11,9 +11,11 @@ import Team5 from "../../assets/Images/Aboutus/Team/team5.png";
 import Team6 from "../../assets/Images/Aboutus/Team/team6.png";
 import Team7 from "../../assets/Images/Aboutus/Team/team7.png";
 import Team8 from "../../assets/Images/Aboutus/Team/team8.png";
+import store from "../../store/store";
+import { useStore } from "eoion";
 
 const AuthorList = () => {
-  const { dark } = useContext(blogContext);
+  const [dark] = useStore(store.subscribe("dark"));
 
   const authorList = [
     { image: Team1, name: "Floyd Miles", email: "floyd@gmail.com" },

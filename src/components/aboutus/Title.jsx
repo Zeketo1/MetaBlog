@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
 import { blogContext } from "../../context/BlogContextProvider";
+import store from "../../store/store";
+import { useStore } from "eoion";
 
 const Title = () => {
-  const { dark } = useContext(blogContext);
+  const [dark] = useStore(store.subscribe("dark"));
   return (
     <>
       <div className={`transition-all duration-500 ${dark ? "bg-[#242535] text-white" : "bg-white text-black"} h-[300px] flex justify-center`}>

@@ -4,10 +4,13 @@ import { blogContext } from "../context/BlogContextProvider";
 import { IoPerson } from "react-icons/io5";
 import { imageDB } from "../firebase";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { useStore } from "eoion";
+import store from "../store/store";
 
 const BlogDetails = () => {
+  const [dark] = useStore(store.subscribe("dark"));
   const { id } = useParams();
-  const { blogs, dark } = useContext(blogContext);
+  const { blogs } = useContext(blogContext);
 
   const userblog = blogs.filter((blog) => blog.id === id);
 

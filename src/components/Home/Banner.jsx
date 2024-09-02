@@ -1,8 +1,11 @@
 import React, { useContext } from "react";
 import { blogContext } from "../../context/BlogContextProvider";
+import { useStore } from "eoion";
+import store from "../../store/store";
 
 const Banner = () => {
-  const { dark } = useContext(blogContext);
+  const [dark] = useStore(store.subscribe("dark"));
+  
   return (
     <>
       <div className="relative h-[250px] sm:h-[300px] md:h-[350px] lg:h-[480px] w-full bg-bannerBg2 bg-no-repeat bg-cover flex items-end mb-[90px]">

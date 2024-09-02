@@ -1,8 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { blogContext } from "../context/BlogContextProvider";
+import { useStore } from "eoion";
+import store from "../store/store";
 
 const Contact = () => {
-  const { dark } = useContext(blogContext);
+  const [dark] = useStore(store.subscribe("dark"));
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
