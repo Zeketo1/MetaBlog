@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { collection, getFirestore } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  getFirestore,
+  setDoc,
+} from "firebase/firestore";
 
 import {
   createUserWithEmailAndPassword,
@@ -28,12 +34,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Init services
-const auth = getAuth(app);
-const db = getFirestore(app);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 export const imageDB = getStorage(app);
 
 // Init collections
 const colBlogs = collection(db, "Blogs");
+const colUsers = collection(db, "Users");
 
 // Toastify
 export const showToast = (message, type) => {
@@ -58,18 +65,22 @@ export const showToast = (message, type) => {
 
 // Authentication
 // SignUp
-const handleSignupForm = async (name, email, password) => {
+const handleSignupForm = async (username, email, password) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
-      name,
       email,
       password
     );
-    showToast(
-      `Success! You have been signed in. Welcome, ${emailAuthName}!`,
-      "success"
-    );
+    const user = userCredential.user;
+
+    // Save additional user info (like username) in Firestore
+    await setDoc(doc(db, "Users", user.uid), {
+      username,
+      email,
+      id: user.uid,
+      createdAt: new Date(),
+    });
   } catch (error) {
     showToast(`Action failed: ${error.message}`, "error");
   }
@@ -85,16 +96,23 @@ const handleLoginForm = async (e, email, password) => {
       email,
       password
     );
-    const loginUsername = usernames.find(
-      (username) => username.email === userCredential.user.email
-    );
+    const userUid = userCredential.user.uid;
+    // Get all documents in the collection
+    const querySnapshot = await getDocs(colUsers);
+
+    // Create an array of documents with id and data
+    const allDocs = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    const filteredDoc = allDocs.find((doc) => doc.id === userUid);
 
     loginUserEmail = userCredential.user.email;
-
-    // console.log("User signed in:", userCredential.user);
-    // console.log("User signed in:", userCredential.user.uid);
-    showToast(`Success! Welcome back, ${loginUsername.firstname}!`, "success");
+    window.location.href = "/create";
+    showToast(`Success! Welcome back, ${filteredDoc.username}!`, "success");
   } catch (error) {
+    console.log(error);
     showToast(`Action failed: ${error.message}`, "error");
   }
 };
@@ -122,11 +140,15 @@ const signupWithGoogle = () => {
 
 const logout = () => {
   signOut(auth)
-    .then(() => showToast(`User signed out!`, "success"))
+    .then(() => {
+      showToast(`User signed out!`, "success");
+      window.location.href = "/";
+    })
     .catch((error) => showToast(`Action failed: ${error.message}`, "error"));
 };
 
 export {
+  colUsers,
   colBlogs,
   handleLoginForm,
   handleSignupForm,

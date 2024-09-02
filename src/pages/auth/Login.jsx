@@ -80,7 +80,7 @@ const Login = ({ setfooter }) => {
                   : "border-gray-300"
               }`}>
               <input
-              type="password"
+              type={showPass ? "password" : "text"}
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

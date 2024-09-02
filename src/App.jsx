@@ -1,9 +1,12 @@
+import { BlogContextProvider } from "./context/BlogContextProvider";
 import AppRoutes from "./Routes/AppRoutes";
-import 'react-loading-skeleton/dist/skeleton.css';
+import "react-loading-skeleton/dist/skeleton.css";
 
 const App = () => (
   <>
-    <AppRoutes />
+    <BlogContextProvider>
+      <AppRoutes />
+    </BlogContextProvider>
   </>
 );
 

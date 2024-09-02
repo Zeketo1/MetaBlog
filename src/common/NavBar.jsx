@@ -4,18 +4,19 @@ import { BiSearch } from "react-icons/bi";
 import { LuSunDim } from "react-icons/lu";
 import { blogContext } from "../context/BlogContextProvider";
 import { WiStars } from "react-icons/wi";
-import { CiMenuFries } from "react-icons/ci";
+import { CiLogout, CiMenuFries } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import store from "../store/store";
 import { useStore } from "eoion";
+import { logout } from "../firebase";
 
 const NavBar = () => {
   const [dark, setDark] = useStore(store.subscribe("dark"));
   const [isOpen, setIsOpen] = useState(false);
+  const { userActive } = useContext(blogContext);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const removeMenu = () => {
-    console.log("zek");
     toggleMenu();
     setDark(!dark);
   };
@@ -26,9 +27,9 @@ const NavBar = () => {
     { option: "Blog", link: "/blogs" },
     { option: "About", link: "/aboutus" },
     { option: "Contact", link: "/contact" },
-    { option: "Dark Mode", link: "/" },
+    { option: "Dark Mode" },
+    { option: "Logout" },
   ];
-
 
   return (
     <>
@@ -54,7 +55,7 @@ const NavBar = () => {
             </p>
           ))}
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <form
             className={`flex border-b items-center ${
               dark ? "border-b-[#1A1814] " : "border-b-gray-200 "
@@ -69,7 +70,7 @@ const NavBar = () => {
           </form>
           <div
             onClick={() => setDark(!dark)}
-            className={`hidden lg:flex transition duration-500 rounded-[50px] items-center px-1 w-[60px] ${
+            className={`hidden lg:flex transition duration-500 rounded-[50px] items-center p-1 w-[60px] ${
               dark ? "bg-[#4B6BFB] " : "bg-[#E8E8EA] "
             }`}
           >
@@ -85,6 +86,14 @@ const NavBar = () => {
               )}
             </div>
           </div>
+          {userActive && (
+            <CiLogout
+              className="hidden lg:block text-[20px]"
+              onClick={() => {
+                logout();
+              }}
+            />
+          )}
           <div className="relative block lg:hidden">
             {/* Burger Button */}
             <button
@@ -113,8 +122,21 @@ const NavBar = () => {
                     dark ? " hover:bg-[#1a1814bc]" : " hover:bg-gray-200"
                   }`}
                 >
-                  {i !== 4 && <Link className="w-full z-10" to={`${link}`}>{option}</Link>}
-                  {i > 3 && <p>{dark && i === 4 ? "Light Mode" : option}</p>}
+                  {i < 4 && (
+                    <Link className="w-full z-10" to={`${link}`}>
+                      {option}
+                    </Link>
+                  )}
+                  {i === 4 && <p>{dark ? "Light Mode" : option}</p>}
+                  {userActive && i === 5 && (
+                    <p
+                      onClick={() => {
+                        logout();
+                      }}
+                    >
+                      {option}
+                    </p>
+                  )}
                   {dark && i === 4 && <LuSunDim className="text-white" />}
                   {!dark && i === 4 && <WiStars className="text-black" />}
                 </div>

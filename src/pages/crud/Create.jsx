@@ -2,13 +2,19 @@ import React, { useState, useContext, useEffect } from "react";
 import { blogContext } from "../../context/BlogContextProvider"; // Assuming you have a context for dark mode
 import store from "../../store/store";
 import { useStore } from "eoion";
-import { colBlogs, imageDB } from "../../firebase";
+import { auth, colBlogs, colUsers, db, imageDB } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { addDoc, updateDoc } from "firebase/firestore";
+import { addDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 const AddBlogPost = () => {
   const [dark] = useStore(store.subscribe("dark"));
-  const { setImageUrl } = useContext(blogContext);
+  const { setImageUrl, setUserActive, userActive, profile, setProfile } =
+    useContext(blogContext);
+  const [userId, setUserId] = useState("");
+  const [userData, setUserData] = useState([]);
+
+  // Form states
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [date, setDate] = useState("");
@@ -27,6 +33,7 @@ const AddBlogPost = () => {
   const headers = tips.map((tip) => tip.header);
   const tipContents = tips.map((tip) => tip.tip);
 
+  // Firebase Storage handler
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -49,6 +56,7 @@ const AddBlogPost = () => {
     }
   };
 
+  // Tips Handler
   const handleAddTip = () => {
     if (tips.length < 5) {
       setTips([...tips, { header: "", tip: "" }]);
@@ -66,20 +74,18 @@ const AddBlogPost = () => {
     setTips(newTips);
   };
 
-  const handleClick = (img, img2, uid) => {
+  // Storage Handler
+  const handleStorage = (img, img2, uid) => {
     if (img !== null) {
       const imgRef = ref(imageDB, `Images/${uid}.${imageType}`);
       const imgRef2 = ref(imageDB, `Images/${uid}S.${imageType2}`);
-      console.log("Image Reference Path:", imgRef.fullPath);
       uploadBytes(imgRef, img).then((value) => {
-        console.log(value);
         getDownloadURL(value.ref).then((url) => {
           setImageUrl((data) => [...data, url]);
         });
       });
 
       uploadBytes(imgRef2, img2).then((value) => {
-        console.log(value);
         getDownloadURL(value.ref).then((url) => {
           setImageUrl((data) => [...data, url]);
         });
@@ -87,6 +93,7 @@ const AddBlogPost = () => {
     }
   };
 
+  // AddBlog function pushing to both firestore and storage
   const addBlog = async () => {
     try {
       // Add the document to the collection and get the reference
@@ -112,7 +119,6 @@ const AddBlogPost = () => {
 
       // Access the document ID
       const newDocId = docRef.id;
-      console.log("Document added with ID: ", newDocId);
 
       // Update the document to include the document ID
       await updateDoc(docRef, {
@@ -120,12 +126,13 @@ const AddBlogPost = () => {
       });
 
       // Handle image upload with the document ID
-      handleClick(image, image2, newDocId);
+      handleStorage(image, image2, newDocId);
     } catch (e) {
       console.log("Error: " + e.message);
     }
   };
 
+  // Form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     // Logic to handle the form submission goes here
@@ -137,10 +144,58 @@ const AddBlogPost = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  // Checking Authentication
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUserActive(true);
+
+        // Accessing the uid and photoURL
+        const userUid = user.uid;
+        const userProfile = user.photoURL;
+
+        setProfile(userProfile);
+        setUserId(userUid);
+        console.log("User UID:", userUid);
+      } else {
+        setUserActive(false);
+      }
+    });
+  }, [userActive, profile]);
+
+  // Checking firestore
+  useEffect(() => {
+    if (userId) {
+      const unsubscribe = onSnapshot(doc(db, "Users", userId), (doc) => {
+        try {
+          if (doc.exists()) {
+            setUserData({
+              ...doc.data(),
+              id: doc.id,
+            });
+          } else {
+            console.log("No such document!");
+          }
+          const user = userData.username;
+          setAuthor(user)
+        } catch (e) {
+          console.log(e.message);
+        }
+      });
+
+      // Cleanup the listener on unmount
+      return () => unsubscribe();
+    }
+  }, [userId, author]);
+
+  console.log(userData);
+
   return (
-    <div className={`w-full flex justify-center transition-colors duration-500 ${
-          dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
-        }`}>
+    <div
+      className={`w-full flex justify-center transition-colors duration-500 ${
+        dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+      }`}
+    >
       <div
         className={`w-full mb-5 sm:w-[80%] flex flex-col gap-3 p-6 shadow-md transition-colors duration-500 ${
           dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
@@ -187,8 +242,9 @@ const AddBlogPost = () => {
               <input
                 type="text"
                 id="author"
+                readOnly
                 value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                // onChange={(e) => setAuthor(e.target.value)}
                 placeholder="Your name"
                 className={`w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500 ${
                   dark

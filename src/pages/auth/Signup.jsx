@@ -27,7 +27,7 @@ const Signup = ({ setfooter }) => {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      showToast("`Welcome to the community!" + name, "success");
+      showToast("`Welcome to the community! " + name, "success");
     } else {
       console.log("Passwords do not match!");
       showToast("Passwords do not match!", "error");
