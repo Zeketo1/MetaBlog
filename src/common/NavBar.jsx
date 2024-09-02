@@ -49,7 +49,7 @@ const NavBar = () => {
             <p
               onClick={() => navigate(link)}
               key={i}
-              className={`cursor-pointer ${i === 4 && "hidden"}`}
+              className={`cursor-pointer ${i >= 4 && "hidden"}`}
             >
               {option}
             </p>
