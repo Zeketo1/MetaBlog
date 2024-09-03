@@ -57,7 +57,7 @@ const NavBar = () => {
         </div>
         <div className="flex gap-4 items-center">
           <form
-            className={`flex border-b items-center ${
+            className={`border-b items-center hidden sm:flex ${
               dark ? "border-b-[#1A1814] " : "border-b-gray-200 "
             } pr-2`}
           >

@@ -2,10 +2,18 @@ import React, { useState, useContext, useEffect } from "react";
 import { blogContext } from "../../context/BlogContextProvider"; // Assuming you have a context for dark mode
 import store from "../../store/store";
 import { useStore } from "eoion";
-import { auth, colBlogs, colUsers, db, imageDB } from "../../firebase";
+import {
+  auth,
+  colBlogs,
+  colUsers,
+  db,
+  imageDB,
+  showToast,
+} from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const AddBlogPost = () => {
   const [dark] = useStore(store.subscribe("dark"));
@@ -13,10 +21,12 @@ const AddBlogPost = () => {
     useContext(blogContext);
   const [userId, setUserId] = useState("");
   const [userData, setUserData] = useState([]);
+  const navigate = useNavigate();
 
   // Form states
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
+  const [googleAuthor, setGoogleAuthor] = useState(null);
   const [date, setDate] = useState("");
   const [category, setCategory] = useState([]);
   const [content, setContent] = useState("");
@@ -76,20 +86,21 @@ const AddBlogPost = () => {
 
   // Storage Handler
   const handleStorage = (img, img2, uid) => {
-    if (img !== null) {
-      const imgRef = ref(imageDB, `Images/${uid}.${imageType}`);
-      const imgRef2 = ref(imageDB, `Images/${uid}S.${imageType2}`);
-      uploadBytes(imgRef, img).then((value) => {
-        getDownloadURL(value.ref).then((url) => {
-          setImageUrl((data) => [...data, url]);
-        });
-      });
+    const uploadImage = (image, refName) => {
+      const imgRef = ref(imageDB, refName);
+      return uploadBytes(imgRef, image).then((value) =>
+        getDownloadURL(value.ref)
+      );
+    };
 
-      uploadBytes(imgRef2, img2).then((value) => {
-        getDownloadURL(value.ref).then((url) => {
-          setImageUrl((data) => [...data, url]);
-        });
-      });
+    if (img) {
+      const imgPromise = uploadImage(img, `Images/${uid}.${imageType}`);
+      imgPromise.then((url) => setImageUrl((data) => [...data, url]));
+    }
+
+    if (img2) {
+      const img2Promise = uploadImage(img2, `Images/${uid}S.${imageType2}`);
+      img2Promise.then((url) => setImageUrl((data) => [...data, url]));
     }
   };
 
@@ -136,8 +147,26 @@ const AddBlogPost = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Logic to handle the form submission goes here
-    addBlog();
-    console.log({ title, author, date, category, content, image, tips });
+    try {
+      addBlog();
+      setTitle("");
+      setAuthor("");
+      setDate("");
+      setCategory([]);
+      setContent("");
+      setImage(null);
+      setPreview(null);
+      setImage2(null);
+      setPreview2(null);
+      setTips([{ header: "", tip: "" }]);
+      setQuote("");
+      setConclusion("");
+      navigate("/blogs");
+      showToast("Blog Post Added Successfully!", "success");
+      console.log({ title, author, date, category, content, image, tips });
+    } catch (e) {
+      showToast(`Error: ${e.message}`, "error");
+    }
   };
 
   useEffect(() => {
@@ -152,9 +181,11 @@ const AddBlogPost = () => {
 
         // Accessing the uid and photoURL
         const userUid = user.uid;
-        const userProfile = user.photoURL;
+        const userProfile = user?.photoURL;
+        const username = user.displayName;
 
         setProfile(userProfile);
+        setGoogleAuthor(username);
         setUserId(userUid);
         console.log("User UID:", userUid);
       } else {
@@ -162,6 +193,7 @@ const AddBlogPost = () => {
       }
     });
   }, [userActive, profile]);
+  console.log(profile);
 
   // Checking firestore
   useEffect(() => {
@@ -177,7 +209,7 @@ const AddBlogPost = () => {
             console.log("No such document!");
           }
           const user = userData.username;
-          setAuthor(user)
+          setAuthor(googleAuthor === null ? user : googleAuthor);
         } catch (e) {
           console.log(e.message);
         }
@@ -303,9 +335,12 @@ const AddBlogPost = () => {
                   : "border-gray-300 scroll__style__light"
               }`}
             >
-              <option value="Tech">Tech</option>
+              <option value="Technology">Technology</option>
               <option value="Lifestyle">Lifestyle</option>
-              <option value="Travel">Travel</option>
+              <option value="Traveling">Traveling</option>
+              <option value="Health">Health</option>
+              <option value="Finance">Finance</option>
+              <option value="Political">Political</option>
               <option value="Food">Food</option>
               <option value="Fashion">Fashion</option>
             </select>

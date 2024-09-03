@@ -10,8 +10,8 @@ import { useStore } from "eoion";
 const BlogsList = () => {
   const [dark] = useStore(store.subscribe("dark"));
   const { blogs, imageUrl, setImageUrl } = useContext(blogContext);
-  const blogsFiltered = blogs.slice(0, 9);
-  const [isloading, setisloading] = useState(true);
+  const blogsFiltered = blogs?.slice(0, 9) || [];
+  const [isLoading, setIsLoading] = useState(true);
 
   const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"];
 
@@ -30,7 +30,7 @@ const BlogsList = () => {
   useEffect(() => {
     fetchImages();
     if (blogs.length > 0) {
-      setTimeout(() => setisloading(false), 3800);
+      setTimeout(() => setIsLoading(false), 3800);
     }
   }, [blogs]);
 
@@ -43,7 +43,7 @@ const BlogsList = () => {
       <div className="flex flex-col px-2 w-full lg:px-0 lg:w-[90%] items-center">
         <h1 className="w-full font-bold mb-2">Latest Post</h1>
         <div className="grid grid-cols-1 w-full xs:grid-cols-2 sm:grid-cols-3 gap-5">
-          {isloading ? (
+          {isLoading ? (
             <SkeletonCards
               cards={9}
               base={dark ? "#3A3B4A" : "#E0E0E0"}
@@ -51,9 +51,10 @@ const BlogsList = () => {
             />
           ) : (
             blogsFiltered.map(({ type, title, date, name, id }, i) => {
-              const matchingImage = imageUrl.find((url) =>
+              const matchingImage = imageUrl?.find((url) =>
                 url.includes(`${id}.`)
               );
+
               return (
                 <Link
                   to={`/blogs/${id}`}
@@ -63,37 +64,51 @@ const BlogsList = () => {
                   } rounded-xl`}
                 >
                   <div>
-                    <img
-                      src={matchingImage}
-                      alt={type}
-                      className="rounded-lg object-cover h-[220px] w-full"
-                    />
+                    {matchingImage ? (
+                      <img
+                        src={matchingImage}
+                        alt={type}
+                        className="rounded-lg object-cover h-[220px] w-full"
+                      />
+                    ) : (
+                      <div className="bg-gray-200 rounded-lg h-[220px] w-full flex items-center justify-center">
+                        <p className="text-gray-500">Image not available</p>
+                      </div>
+                    )}
                     <h2 className="text-[13px] w-fit px-2 py-1 mt-4 rounded-[4px] bg-[#4b6bfb0e] text-[#4B6BFB]">
-                      {type}
+                      {type || "No type available"}
                     </h2>
                     <p
                       className={`mt-2 font-semibold xs:text-[13px] sm:text-[15px]`}
                     >
-                      {title}
+                      {title || "No title available"}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 mt-4">
-                    <div className="flex items-center justify-center h-[35px] w-[35px] rounded-[50%] bg-blue-400">
-                      {name.slice(0, 1).toUpperCase()}
+                    {!imageUrl || imageUrl === "" ? (
+                      <div className="flex items-center justify-center h-[35px] w-[35px] rounded-[50%] bg-blue-400">
+                        {name?.slice(0, 1).toUpperCase() || "U"}
+                      </div>
+                    ) : (
+                      <img
+                        src={imageUrl}
+                        alt="Author"
+                        className="h-[35px] w-[35px] rounded-[50%]"
+                      />
+                    )}
+                    <div
+                      className={`xs:text-[13px] ${
+                        dark ? "text-[#ffffff86]" : "text-[#00000086]"
+                      }`}
+                    >
+                      {name || "Unknown author"}
                     </div>
                     <div
                       className={`xs:text-[13px] ${
                         dark ? "text-[#ffffff86]" : "text-[#00000086]"
                       }`}
                     >
-                      {name}
-                    </div>
-                    <div
-                      className={`xs:text-[13px] ${
-                        dark ? "text-[#ffffff86]" : "text-[#00000086]"
-                      }`}
-                    >
-                      {date}
+                      {date || "No date available"}
                     </div>
                   </div>
                 </Link>
@@ -102,7 +117,8 @@ const BlogsList = () => {
           )}
         </div>
       </div>
-      <Link to="/blogs"
+      <Link
+        to="/blogs"
         className={`py-1 px-3 border-2 ${
           dark ? "border-[#ffffff93]" : "border-[#00000093]"
         } rounded-md`}

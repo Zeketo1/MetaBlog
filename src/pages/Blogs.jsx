@@ -93,7 +93,7 @@ const Blogs = () => {
                     // initial="hidden"
                     // animate="visible"
                     // initial={{ opacity: 0 }}
-                    // animate={{ 
+                    // animate={{
                     //   opacity: 1,
                     //   transition: { duration: 0.5, delay: 0.5 },
                     // }}
@@ -102,9 +102,9 @@ const Blogs = () => {
                     className="absolute object-cover w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[480px]"
                   />
                   <div
-                    className={`transition duration-500 ${
+                    className={`p-4 sm:p-7 transition duration-500 ${
                       dark ? "bg-[#242535] text-white" : "bg-white"
-                    }  shadow-lg rounded-md translate-y-10 translate-x-10 w-[300px] sm:w-[350px] p-7 flex flex-col gap-2`}
+                    }  shadow-lg rounded-md translate-y-10 translate-x-10 w-[300px] sm:w-[350px] flex flex-col gap-2`}
                   >
                     <p className="bg-[#4B6BFB] w-fit px-2 py-[1px] rounded-[4px] text-white">
                       Technology
