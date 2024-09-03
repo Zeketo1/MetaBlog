@@ -85,17 +85,9 @@ const BlogsList = () => {
                     </p>
                   </div>
                   <div className="flex items-center gap-2 mt-4">
-                    {!imageUrl || imageUrl === "" ? (
-                      <div className="flex items-center justify-center h-[35px] w-[35px] rounded-[50%] bg-blue-400">
-                        {name?.slice(0, 1).toUpperCase() || "U"}
-                      </div>
-                    ) : (
-                      <img
-                        src={imageUrl}
-                        alt="Author"
-                        className="h-[35px] w-[35px] rounded-[50%]"
-                      />
-                    )}
+                    <div className="flex items-center justify-center h-[35px] w-[35px] rounded-[50%] bg-blue-400">
+                      {name?.slice(0, 1).toUpperCase() || "U"}
+                    </div>
                     <div
                       className={`xs:text-[13px] ${
                         dark ? "text-[#ffffff86]" : "text-[#00000086]"
