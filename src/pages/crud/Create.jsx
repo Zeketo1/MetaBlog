@@ -161,7 +161,7 @@ const AddBlogPost = () => {
       setTips([{ header: "", tip: "" }]);
       setQuote("");
       setConclusion("");
-      // navigate("/blogs");
+      navigate("/blogs");
       showToast("Blog Post Added Successfully!", "success");
     } catch (e) {
       showToast(`Error: ${e.message}`, "error");
