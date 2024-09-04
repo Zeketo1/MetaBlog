@@ -7,6 +7,7 @@ import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { imageDB } from "../firebase";
 import { useStore } from "eoion";
 import store from "../store/store";
+import AddBlogbtn from "../utils/AddBlogbtn";
 
 const Blogs = () => {
   const [dark] = useStore(store.subscribe("dark"));
@@ -73,6 +74,7 @@ const Blogs = () => {
           dark ? "bg-[#242535] text-white" : "bg-white text-black"
         } flex items-center pb-10 flex-col gap-[30px]`}
       >
+        <AddBlogbtn />
         <div className="relative h-[250px] sm:h-[300px] md:h-[350px] lg:h-[480px] w-full mb-[90px]">
           {/* <div
             className={`h-[250px] sm:h-[300px] md:h-[350px] lg:h-[480px] w-full transition duration-500 ${
