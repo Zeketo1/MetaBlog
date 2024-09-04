@@ -42,8 +42,6 @@ const Blogs = () => {
 
   const [index, setindex] = useState(0);
 
-  console.log(bannerInfos);
-
   // Framer-motion
   // const container = {
   //   hidden: { opacity: 0 },

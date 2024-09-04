@@ -36,9 +36,9 @@ const AddBlogPost = () => {
   const [imageType2, setImageType2] = useState("");
   const [preview, setPreview] = useState(null);
   const [preview2, setPreview2] = useState(null);
-  const [tips, setTips] = useState([{ header: "", tip: "" }]);
   const [quote, setQuote] = useState("");
   const [conclusion, setConclusion] = useState("");
+  const [tips, setTips] = useState([{ header: "", tip: "" }]);
 
   const headers = tips.map((tip) => tip.header);
   const tipContents = tips.map((tip) => tip.tip);
@@ -114,16 +114,16 @@ const AddBlogPost = () => {
         date,
         type: category,
         article: content,
-        tip1: tipContents[0],
-        tipheader1: headers[0],
-        tip2: tipContents[1],
-        tipheader2: headers[1],
-        tip3: tipContents[2],
-        tipheader3: headers[2],
-        tip4: tipContents[3],
-        tipheader4: headers[3],
-        tip5: tipContents[4],
-        tipheader5: headers[4],
+        tip1: tipContents[0] || " ",
+        tipheader1: headers[0] || " ",
+        tip2: tipContents[1] || " ",
+        tipheader2: headers[1] || " ",
+        tip3: tipContents[2] || " ",
+        tipheader3: headers[2] || " ",
+        tip4: tipContents[3] || " ",
+        tipheader4: headers[3] || " ",
+        tip5: tipContents[4] || " ",
+        tipheader5: headers[4] || " ",
         quote,
         conclusion,
       });
@@ -161,9 +161,8 @@ const AddBlogPost = () => {
       setTips([{ header: "", tip: "" }]);
       setQuote("");
       setConclusion("");
-      navigate("/blogs");
+      // navigate("/blogs");
       showToast("Blog Post Added Successfully!", "success");
-      console.log({ title, author, date, category, content, image, tips });
     } catch (e) {
       showToast(`Error: ${e.message}`, "error");
     }
@@ -187,13 +186,11 @@ const AddBlogPost = () => {
         setProfile(userProfile);
         setGoogleAuthor(username);
         setUserId(userUid);
-        console.log("User UID:", userUid);
       } else {
         setUserActive(false);
       }
     });
   }, [userActive, profile]);
-  console.log(profile);
 
   // Checking firestore
   useEffect(() => {
@@ -220,7 +217,7 @@ const AddBlogPost = () => {
     }
   }, [userId, author]);
 
-  console.log(userData);
+  console.log(tips)
 
   return (
     <div
@@ -276,14 +273,12 @@ const AddBlogPost = () => {
                 id="author"
                 readOnly
                 value={author}
-                // onChange={(e) => setAuthor(e.target.value)}
                 placeholder="Your name"
                 className={`w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500 ${
                   dark
                     ? "bg-gray-700 border-gray-600 text-gray-300"
                     : "border-gray-300"
                 }`}
-                required
               />
             </div>
             <div className="flex-1">
@@ -329,6 +324,7 @@ const AddBlogPost = () => {
                 )
               }
               multiple
+              required
               className={`w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500 ${
                 dark
                   ? "bg-gray-700 border-gray-600 text-gray-300 scroll__style__dark"
@@ -397,6 +393,7 @@ const AddBlogPost = () => {
                 id="image1" // Unique ID
                 onChange={handleImageUpload}
                 className="hidden" // Hide the default file input
+                required
               />
               <span className="ml-4 text-sm text-gray-500 dark:text-gray-400">
                 {image ? image.name : "No file chosen"}
@@ -493,6 +490,7 @@ const AddBlogPost = () => {
                 id="image2" // Unique ID
                 onChange={handleImageUpload2}
                 className="hidden" // Hide the default file input
+                required
               />
               <span className="ml-4 text-sm text-gray-500 dark:text-gray-400">
                 {image2 ? image2.name : "No file chosen"}
@@ -556,8 +554,8 @@ const AddBlogPost = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-between items-center mt-6">
-            <button
+          <div className="flex justify-end items-center mt-6">
+            {/* <button
               type="button"
               className={`py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors ${
                 dark ? "bg-gray-500 text-white" : "bg-gray-200 text-black"
@@ -565,7 +563,7 @@ const AddBlogPost = () => {
               onClick={() => alert("This would show a preview")}
             >
               Preview Post
-            </button>
+            </button> */}
             <button
               type="submit"
               className={`py-2 px-4 rounded-lg font-semibold hover:bg-blue-600 transition-colors ${

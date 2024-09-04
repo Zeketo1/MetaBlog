@@ -3,9 +3,10 @@ import { blogContext } from "../../context/BlogContextProvider";
 import SkeletonCards from "../../utils/skeleton/SkeletonCards";
 import { Link } from "react-router-dom";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
-import { imageDB } from "../../firebase";
+import { colBlogs, imageDB } from "../../firebase";
 import store from "../../store/store";
 import { useStore } from "eoion";
+import { addDoc } from "firebase/firestore";
 
 const BlogsList = () => {
   const [dark] = useStore(store.subscribe("dark"));

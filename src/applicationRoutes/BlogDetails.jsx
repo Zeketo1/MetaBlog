@@ -95,14 +95,14 @@ const BlogDetails = () => {
                 />
               )}
               {article && <p className="mb-3">{article}</p>}
-              {tipheader1 && (
+              {tipheader1.trim() === "" ? null : (
                 <h1 className="text-xl font-semibold mb-1">{tipheader1}</h1>
               )}
-              {tip1 && <p className="mb-3">{tip1}</p>}
-              {tipheader2 && (
+              {tip1.trim() === "" ? null : <p className="mb-3">{tip1}</p>}
+              {tipheader2.trim() === "" ? null : (
                 <h1 className="text-xl font-semibold mb-1">{tipheader2}</h1>
               )}
-              {tip2 && <p className="mb-3">{tip2}</p>}
+              {tip2.trim() === "" ? null : <p className="mb-3">{tip2}</p>}
               {quote && (
                 <p
                   className={`transition duration-500 mb-4 text-xl p-3 border-l-4 rounded-xl border-black ${
@@ -119,18 +119,18 @@ const BlogDetails = () => {
                   className="mb-2 rounded-md h-[250px] sm:h-[350px] md:h-[400px] lg:h-[450px] w-full object-cover"
                 />
               )}
-              {tipheader3 && (
+              {tipheader3.trim() === "" ? null : (
                 <h1 className="text-xl font-semibold mb-1">{tipheader3}</h1>
               )}
-              {tip3 && <p className="mb-3">{tip3}</p>}
-              {tipheader4 && (
+              {tip3.trim() === "" ? null : <p className="mb-3">{tip3}</p>}
+              {tipheader4.trim() === "" ? null : (
                 <h1 className="text-xl font-semibold mb-1">{tipheader4}</h1>
               )}
-              {tip4 && <p className="mb-3">{tip4}</p>}
-              {tipheader5 && (
+              {tip4.trim() === "" ? null : <p className="mb-3">{tip4}</p>}
+              {tipheader5.trim() === "" ? null : (
                 <h1 className="text-xl font-semibold mb-1">{tipheader5}</h1>
               )}
-              {tip5 && <p className="mb-3">{tip5}</p>}
+              {tip5.trim() === "" ? null : <p className="mb-3">{tip5}</p>}
               {conclusion && (
                 <>
                   <h1 className="text-xl font-semibold mb-1">Conclusion:</h1>
