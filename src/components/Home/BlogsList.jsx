@@ -6,12 +6,12 @@ import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { colBlogs, imageDB } from "../../firebase";
 import store from "../../store/store";
 import { useStore } from "eoion";
-import { addDoc } from "firebase/firestore";
 
 const BlogsList = () => {
   const [dark] = useStore(store.subscribe("dark"));
-  const { blogs, imageUrl, setImageUrl } = useContext(blogContext);
+  const { blogs, imageUrl, setImageUrl, blogSort } = useContext(blogContext);
   const blogsFiltered = blogs?.slice(0, 9) || [];
+  const blogsFilteredSort = blogSort?.slice(0, 9) || [];
   const [isLoading, setIsLoading] = useState(true);
 
   const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"];
@@ -51,7 +51,7 @@ const BlogsList = () => {
               highlightColor={dark ? "#4A4B5A" : "#F0F0F0"}
             />
           ) : (
-            blogsFiltered.map(({ type, title, date, name, id }, i) => {
+            blogsFilteredSort.map(({ type, title, date, name, id }, i) => {
               const matchingImage = imageUrl?.find((url) =>
                 url.includes(`${id}.`)
               );

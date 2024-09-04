@@ -11,6 +11,8 @@ const BlogContextProvider = ({ children }) => {
   const [userActive, setUserActive] = useState(false);
   const [profile, setProfile] = useState("");
 
+  const blogSort = blogs.sort((a, b) => b.date.localeCompare(a.date));
+
   useEffect(() => {
     const unsubscribe = onSnapshot(colBlogs, (snapshot) => {
       try {
@@ -31,6 +33,7 @@ const BlogContextProvider = ({ children }) => {
   return (
     <blogContext.Provider
       value={{
+        blogSort,
         blogs,
         dark,
         setDark,

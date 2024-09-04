@@ -10,7 +10,7 @@ import store from "../store/store";
 
 const Blogs = () => {
   const [dark] = useStore(store.subscribe("dark"));
-  const { blogs } = useContext(blogContext);
+  const { blogs, blogSort } = useContext(blogContext);
   const [imageUrl, setImageUrl] = useState([]);
   const [isloading, setisloading] = useState(true);
 
@@ -113,7 +113,7 @@ const Blogs = () => {
                     <div className="flex items-center text-[13px] justify-around">
                       <div className="w-[40px] h-[40px] bg-blue-900 rounded-[50%]" />
                       <p>{name}</p>
-                      <p>August 20, 2022</p>
+                      <p>{date}</p>
                     </div>
                   </div>
                 </div>
@@ -128,7 +128,7 @@ const Blogs = () => {
               base={dark ? "#111827" : "#eedece"}
             />
           ) : (
-            blogs.map(({ type, title, date, image, name, id }, i) => {
+            blogSort.map(({ type, title, date, image, name, id }, i) => {
               const matchingImage = imageUrl.find((url) =>
                 url.includes(`${id}.`)
               );

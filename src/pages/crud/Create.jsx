@@ -217,7 +217,6 @@ const AddBlogPost = () => {
     }
   }, [userId, author]);
 
-  console.log(tips)
 
   return (
     <div
