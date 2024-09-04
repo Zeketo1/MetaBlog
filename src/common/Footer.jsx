@@ -111,7 +111,7 @@ const Footer = () => {
                 Meta<span className="font-semibold">Blog</span>
               </p>
               <p className="text-[12px] opacity-80 flex gap-1">
-                <span>&copy;2023 MetaBlog.</span>
+                <span>&copy;Ikoro Francis 2024 .</span>
                 <span className="opacity-50 hidden sm:block">
                   All rights reserved.
                 </span>
