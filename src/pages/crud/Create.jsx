@@ -174,10 +174,8 @@ const AddBlogPost = () => {
 
   // Checking Authentication
   useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUserActive(true);
-
         // Accessing the uid and photoURL
         const userUid = user.uid;
         const userProfile = user?.photoURL;
@@ -186,11 +184,9 @@ const AddBlogPost = () => {
         setProfile(userProfile);
         setGoogleAuthor(username);
         setUserId(userUid);
-      } else {
-        setUserActive(false);
-      }
+      } 
     });
-  }, [userActive, profile]);
+  }, [profile]);
 
   // Checking firestore
   useEffect(() => {

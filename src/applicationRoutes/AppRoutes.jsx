@@ -16,21 +16,31 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
+import Spinner from "../utils/spinner/Spinner";
 
 const AppRoutes = () => {
   const [footer, setfooter] = useState(true);
   const { userActive, setUserActive } = useContext(blogContext);
+  const [loading, setLoading] = useState(true);  // Loading state
 
   useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
+    // Check the auth state
+    onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserActive(true);
       } else {
         setUserActive(false);
       }
+      setLoading(false); // Set loading to false once we know the auth state
     });
-    setfooter(true)
-  }, [userActive]);
+  }, [setUserActive]);
+
+  if (loading) {
+    // Show spinner while loading
+    return (
+      <Spinner size={50} height="h-screen"/>
+    );
+  }
 
   return (
     <>
