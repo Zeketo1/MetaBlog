@@ -21,13 +21,14 @@ import Spinner from "../utils/spinner/Spinner";
 const AppRoutes = () => {
   const [footer, setfooter] = useState(true);
   const { userActive, setUserActive } = useContext(blogContext);
-  const [loading, setLoading] = useState(true);  // Loading state
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     // Check the auth state
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserActive(true);
+        setLoading(true);
       } else {
         setUserActive(false);
       }
@@ -37,9 +38,7 @@ const AppRoutes = () => {
 
   if (loading) {
     // Show spinner while loading
-    return (
-      <Spinner size={50} height="h-screen"/>
-    );
+    return <Spinner size={50} height="h-screen" />;
   }
 
   return (

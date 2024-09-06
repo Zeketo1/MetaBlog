@@ -88,7 +88,7 @@ const Blogs = () => {
             return (
               i === index && (
                 <div key={i} className="relative h-full w-full flex items-end">
-                  <motion.img
+                  <img
                     // variants={container(100, 1)}
                     // initial="hidden"
                     // animate="visible"
