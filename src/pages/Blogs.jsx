@@ -24,7 +24,7 @@ const Blogs = () => {
   const [blogsStore, setBlogsStore] = useStore(store2.subscribe("blogsStore"));
 
   // Mixing
-  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"];
+  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".avif"];
 
   const fetchImages = () => {
     listAll(ref(imageDB, `Images`)).then((fireimages) => {
@@ -135,10 +135,12 @@ const Blogs = () => {
               highlightColor={dark ? "#4A4B5A" : "#F0F0F0"}
             />
           ) : (
-            blogSort.map(({ type, title, date, image, name, id }, i) => {
+            blogSort.map(({ type, title, date, name, id }, i) => {
               const matchingImage = imageUrl.find((url) =>
                 url.includes(`${id}.`)
               );
+              console.log(matchingImage, i);
+              
               return (
                 <Link
                   to={`/blogs/${id}`}
