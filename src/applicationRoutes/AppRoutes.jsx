@@ -28,7 +28,6 @@ const AppRoutes = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserActive(true);
-        setLoading(true);
       } else {
         setUserActive(false);
       }
@@ -38,11 +37,33 @@ const AppRoutes = () => {
 
   if (loading) {
     // Show spinner while loading
-    return <Spinner size={50} height="h-screen" />;
+    return <Spinner height="h-screen" size={50} />;
   }
 
   return (
     <>
+      {/* <div className="flex items-center">
+              <label
+                htmlFor="image1" // Updated to match the unique ID
+                className={`cursor-pointer py-2 px-4 rounded-lg transition-colors ${
+                  dark
+                    ? "bg-gray-600 hover:bg-gray-500 text-white"
+                    : "bg-gray-200 hover:bg-gray-300 text-black"
+                }`}
+              >
+                Choose File
+              </label>
+              <input
+                type="file"
+                id="image1" // Unique ID
+                onChange={handleImageUpload}
+                className="hidden" // Hide the default file input
+                required
+              />
+              <span className="ml-4 text-sm text-gray-500 dark:text-gray-400">
+                {image ? image.name : "No file chosen"}
+              </span>
+            </div> */}
       <BrowserRouter>
         <NavBar />
         <ToastContainer />

@@ -6,14 +6,22 @@ import { Link } from "react-router-dom";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { imageDB } from "../firebase";
 import { useStore } from "eoion";
-import store from "../store/store";
+import store, { store2 } from "../store/store";
 import AddBlogbtn from "../utils/AddBlogbtn";
 
 const Blogs = () => {
   const [dark] = useStore(store.subscribe("dark"));
   const { blogs, blogSort } = useContext(blogContext);
-  const [imageUrl, setImageUrl] = useState([]);
-  const [isloading, setisloading] = useState(true);
+  const [imageUrl, setImageUrl] = useStore(
+    store2.subscribe("imageUrl2")
+  );
+
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const [skeletonCon2, setSkeletonCon2] = useStore(
+    store2.subscribe("skeletonCon2")
+  );
+  const [blogsStore, setBlogsStore] = useStore(store2.subscribe("blogsStore"));
 
   // Mixing
   const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"];
@@ -31,28 +39,24 @@ const Blogs = () => {
   };
 
   useEffect(() => {
-    fetchImages();
-    if (blogs.length > 0) {
-      setInterval(() => {
-        setisloading(false);
-      }, 3800);
+    setBlogsStore(blogSort);
+    if (skeletonCon2) {
+      setIsLoading(true);
     }
+
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      setSkeletonCon2(false);
+    }, 3800);
+
+    fetchImages();
+
+    return () => clearTimeout(timer);
   }, [blogs]);
 
   const bannerInfos = blogs.filter((item) => item.blogBanner);
 
   const [index, setindex] = useState(0);
-
-  // Framer-motion
-  // const container = {
-  //   hidden: { opacity: 0 },
-  //   show: {
-  //     opacity: 1,
-  //     transition: {
-  //       delayChildren: 0.5,
-  //     },
-  //   },
-  // };
 
   const container = (x, delay) => ({
     hidden: { x: x, opacity: 0 },
@@ -124,10 +128,11 @@ const Blogs = () => {
           })}
         </div>
         <div className="w-full sm:w-[90%] grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-5">
-          {isloading ? (
+          {isLoading ? (
             <SkeletonCards
               cards={blogs?.length}
-              base={dark ? "#111827" : "#eedece"}
+              base={dark ? "#3A3B4A" : "#E0E0E0"}
+              highlightColor={dark ? "#4A4B5A" : "#F0F0F0"}
             />
           ) : (
             blogSort.map(({ type, title, date, image, name, id }, i) => {

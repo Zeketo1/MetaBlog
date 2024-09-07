@@ -1,27 +1,26 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { blogContext } from "../../context/BlogContextProvider"; // Assuming you have a context for dark mode
 import store from "../../store/store";
 import { useStore } from "eoion";
-import {
-  auth,
-  colBlogs,
-  colUsers,
-  db,
-  imageDB,
-  showToast,
-} from "../../firebase";
+import { auth, colBlogs, db, imageDB, showToast } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import Spinner2 from "../../utils/spinner/Spinner2";
+import { useDropzone } from "react-dropzone";
+import { CiImageOn } from "react-icons/ci";
 
 const AddBlogPost = () => {
+  // Eoion
   const [dark] = useStore(store.subscribe("dark"));
-  const { setImageUrl, setUserActive, userActive, profile, setProfile } =
-    useContext(blogContext);
+
+  // States
+  const { setImageUrl, profile, setProfile } = useContext(blogContext);
   const [userId, setUserId] = useState("");
   const [userData, setUserData] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // Form states
   const [title, setTitle] = useState("");
@@ -30,9 +29,9 @@ const AddBlogPost = () => {
   const [date, setDate] = useState("");
   const [category, setCategory] = useState([]);
   const [content, setContent] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]);
   const [imageType, setImageType] = useState("");
-  const [image2, setImage2] = useState(null);
+  const [image2, setImage2] = useState([]);
   const [imageType2, setImageType2] = useState("");
   const [preview, setPreview] = useState(null);
   const [preview2, setPreview2] = useState(null);
@@ -44,27 +43,34 @@ const AddBlogPost = () => {
   const tipContents = tips.map((tip) => tip.tip);
 
   // Firebase Storage handler
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
+  const onDrop = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
     if (file) {
-      const fileName = file.name;
-      const fileExtension = fileName.split(".").pop().toLowerCase();
       setImage(file);
-      setImageType(fileExtension);
-      setPreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleImageUpload2 = (e) => {
-    const file = e.target.files[0];
-    if (file) {
       const fileName = file.name;
       const fileExtension = fileName.split(".").pop().toLowerCase();
-      setImage2(file);
-      setImageType2(fileExtension);
-      setPreview2(URL.createObjectURL(file));
+      setImageType(fileExtension);
     }
-  };
+    const previewURLs = acceptedFiles.map((file) => URL.createObjectURL(file));
+    setPreview(previewURLs);
+  }, []);
+
+  const onDrop2 = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setImage2(file);
+      const fileName = file.name;
+      const fileExtension = fileName.split(".").pop().toLowerCase();
+      setImageType2(fileExtension);
+    }
+    const previewURLs = acceptedFiles.map((file) => URL.createObjectURL(file));
+    setPreview2(previewURLs);
+  }, []);
+
+  const { getRootProps: getRootProps1, getInputProps: getInputProps1 } =
+    useDropzone({ onDrop });
+  const { getRootProps: getRootProps2, getInputProps: getInputProps2 } =
+    useDropzone({ onDrop: onDrop2 });
 
   // Tips Handler
   const handleAddTip = () => {
@@ -149,20 +155,25 @@ const AddBlogPost = () => {
     // Logic to handle the form submission goes here
     try {
       addBlog();
-      setTitle("");
-      setAuthor("");
-      setDate("");
-      setCategory([]);
-      setContent("");
-      setImage(null);
-      setPreview(null);
-      setImage2(null);
-      setPreview2(null);
-      setTips([{ header: "", tip: "" }]);
-      setQuote("");
-      setConclusion("");
-      navigate("/blogs");
-      showToast("Blog Post Added Successfully!", "success");
+      setLoading(true);
+      const timer = setTimeout(() => {
+        setTitle("");
+        setAuthor("");
+        setDate("");
+        setCategory([]);
+        setContent("");
+        setImage(null);
+        setPreview(null);
+        setImage2(null);
+        setPreview2(null);
+        setTips([{ header: "", tip: "" }]);
+        setQuote("");
+        setConclusion("");
+        navigate("/blogs");
+        showToast("Blog Post Added Successfully!", "success");
+      }, 2500);
+
+      return () => clearTimeout(timer);
     } catch (e) {
       showToast(`Error: ${e.message}`, "error");
     }
@@ -184,7 +195,7 @@ const AddBlogPost = () => {
         setProfile(userProfile);
         setGoogleAuthor(username);
         setUserId(userUid);
-      } 
+      }
     });
   }, [profile]);
 
@@ -212,7 +223,6 @@ const AddBlogPost = () => {
       return () => unsubscribe();
     }
   }, [userId, author]);
-
 
   return (
     <div
@@ -372,35 +382,36 @@ const AddBlogPost = () => {
             >
               Upload Image
             </label>
-            <div className="flex items-center">
-              <label
-                htmlFor="image1" // Updated to match the unique ID
-                className={`cursor-pointer py-2 px-4 rounded-lg transition-colors ${
-                  dark
-                    ? "bg-gray-600 hover:bg-gray-500 text-white"
-                    : "bg-gray-200 hover:bg-gray-300 text-black"
-                }`}
-              >
-                Choose File
-              </label>
-              <input
-                type="file"
-                id="image1" // Unique ID
-                onChange={handleImageUpload}
-                className="hidden" // Hide the default file input
-                required
-              />
-              <span className="ml-4 text-sm text-gray-500 dark:text-gray-400">
-                {image ? image.name : "No file chosen"}
-              </span>
+
+            <div
+              {...getRootProps1()}
+              className={`p-6 rounded-md cursor-pointer transition-all
+      border border-dashed ${preview ? "h-[400px]" : "h-fit"} ${
+                dark
+                  ? "bg-[#242535] text-[#f8f8f2] border-[#44475a]"
+                  : "bg-white text-gray-900 border-gray-300"
+              }`}
+            >
+              <input {...getInputProps1()} />
+              {!preview && (
+                <div className="w-full flex flex-col items-center gap-3">
+                  <CiImageOn className="text-[30px]" />{" "}
+                  <p>Click To Upload Image</p>
+                </div>
+              )}
+              <ul className="mt-4">
+                <li className="text-sm">{image.name}</li>
+              </ul>
+              <div className="h-[80%]">
+                {preview && (
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="mt-4 w-full h-full object-cover rounded-md"
+                  />
+                )}
+              </div>
             </div>
-            {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="mt-4 w-full h-64 object-contain"
-              />
-            )}
           </div>
 
           {/* Tips Input */}
@@ -469,35 +480,35 @@ const AddBlogPost = () => {
             >
               Upload Second Image
             </label>
-            <div className="flex items-center">
-              <label
-                htmlFor="image2" // Updated to match the unique ID
-                className={`cursor-pointer py-2 px-4 rounded-lg transition-colors ${
-                  dark
-                    ? "bg-gray-600 hover:bg-gray-500 text-white"
-                    : "bg-gray-200 hover:bg-gray-300 text-black"
-                }`}
-              >
-                Choose File
-              </label>
-              <input
-                type="file"
-                id="image2" // Unique ID
-                onChange={handleImageUpload2}
-                className="hidden" // Hide the default file input
-                required
-              />
-              <span className="ml-4 text-sm text-gray-500 dark:text-gray-400">
-                {image2 ? image2.name : "No file chosen"}
-              </span>
+            <div
+              {...getRootProps2()}
+              className={`p-6 rounded-md cursor-pointer transition-all
+      border border-dashed ${preview2 ? "h-[400px]" : "h-fit"} ${
+                dark
+                  ? "bg-[#242535] text-[#f8f8f2] border-[#44475a]"
+                  : "bg-white text-gray-900 border-gray-300"
+              }`}
+            >
+              <input {...getInputProps2()} />
+              {!preview2 && (
+                <div className="w-full flex flex-col items-center gap-3">
+                  <CiImageOn className="text-[30px]" />{" "}
+                  <p>Click To Upload Image</p>
+                </div>
+              )}
+              <ul className="mt-4">
+                <li className="text-sm">{image2.name}</li>
+              </ul>
+              <div className="h-[80%]">
+                {preview2 && (
+                  <img
+                    src={preview2}
+                    alt="Preview"
+                    className="mt-4 w-full h-full object-cover rounded-md"
+                  />
+                )}
+              </div>
             </div>
-            {preview2 && (
-              <img
-                src={preview2}
-                alt="Preview"
-                className="mt-4 w-full h-64 object-contain"
-              />
-            )}
           </div>
 
           <div className="mb-4">
@@ -561,11 +572,15 @@ const AddBlogPost = () => {
             </button> */}
             <button
               type="submit"
-              className={`py-2 px-4 rounded-lg font-semibold hover:bg-blue-600 transition-colors ${
+              className={`py-2 w-[150px] rounded-lg font-semibold hover:bg-blue-600 transition-colors ${
                 dark ? "bg-blue-500 text-white" : "bg-blue-500 text-white"
               }`}
             >
-              Submit Post
+              {loading ? (
+                <Spinner2 height="h-full" width="w-full" size={20} />
+              ) : (
+                "Submit Post"
+              )}
             </button>
           </div>
         </form>
