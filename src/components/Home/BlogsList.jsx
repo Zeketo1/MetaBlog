@@ -24,7 +24,7 @@ const BlogsList = () => {
   const blogsFilteredSort = blogSort?.slice(0, 9) || [];
   const [isLoading, setIsLoading] = useState(false);
 
-  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"];
+  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".avif"];
 
   const fetchImages = () => {
     listAll(ref(imageDB, `Images`)).then((fireimages) => {
