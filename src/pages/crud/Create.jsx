@@ -224,6 +224,12 @@ const AddBlogPost = () => {
     }
   }, [userId, author]);
 
+  useEffect(() => {
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    setDate(formattedDate);
+  }, []);
+
   return (
     <div
       className={`w-full flex justify-center transition-colors duration-500 ${
@@ -299,7 +305,7 @@ const AddBlogPost = () => {
                 type="date"
                 id="date"
                 value={date}
-                onChange={(e) => setDate(e.target.value)}
+                disabled
                 className={`w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500 ${
                   dark
                     ? "bg-gray-700 border-gray-600 text-gray-300"
