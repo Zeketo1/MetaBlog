@@ -188,9 +188,9 @@ const AddBlogPost = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // Accessing the uid and photoURL
-        const userUid = user.uid;
+        const userUid = user?.uid;
         const userProfile = user?.photoURL;
-        const username = user.displayName;
+        const username = user?.displayName;
 
         setProfile(userProfile);
         setGoogleAuthor(username);
@@ -224,6 +224,7 @@ const AddBlogPost = () => {
     }
   }, [userId, author]);
 
+  // Checking date
   useEffect(() => {
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
@@ -269,7 +270,7 @@ const AddBlogPost = () => {
           </div>
 
           {/* Author and Date Input */}
-          <div className="flex space-x-4 mb-4">
+          {/* <div className="flex space-x-4 mb-4">
             <div className="flex-1">
               <label
                 className={`block mb-2 ${
@@ -314,7 +315,7 @@ const AddBlogPost = () => {
                 required
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Category Input */}
           <div className="mb-4">
