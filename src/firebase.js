@@ -73,6 +73,7 @@ const handleSignupForm = async (username, email, password) => {
       password
     );
     const user = userCredential.user;
+    
 
     // Save additional user info (like username) in Firestore
     await setDoc(doc(db, "Users", user.uid), {
