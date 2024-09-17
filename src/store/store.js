@@ -12,6 +12,7 @@ export const store2 = createStore({
   imageUrl2: [],
   blogsStoreFiltered: [],
   blogsStore: [],
+  author: "",
 });
 
 export default store;

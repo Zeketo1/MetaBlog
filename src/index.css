@@ -46,6 +46,10 @@
   animation: translate .3s linear;
 }
 
+.transit {
+  transition: all .6s cubic-bezier(.77, 0, .175, 1) ;
+}
+
 @keyframes translate {
   from {
     transform: translateX(100px);

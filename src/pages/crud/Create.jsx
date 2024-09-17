@@ -14,14 +14,14 @@ import { CiImageOn } from "react-icons/ci";
 const AddBlogPost = () => {
   // Eoion
   const [dark] = useStore(store.subscribe("dark"));
-
+  
   // States
   const { setImageUrl, profile, setProfile } = useContext(blogContext);
   const [userId, setUserId] = useState("");
   const [userData, setUserData] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  
   // Form states
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -132,6 +132,7 @@ const AddBlogPost = () => {
         tipheader5: headers[4] || " ",
         quote,
         conclusion,
+        userAuthUid: userId,
       });
 
       // Access the document ID
@@ -158,8 +159,6 @@ const AddBlogPost = () => {
       setLoading(true);
       const timer = setTimeout(() => {
         setTitle("");
-        setAuthor("");
-        setDate("");
         setCategory([]);
         setContent("");
         setImage(null);
@@ -179,25 +178,10 @@ const AddBlogPost = () => {
     }
   };
 
+  // Scroll to the Top
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-
-  // Checking Authentication
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // Accessing the uid and photoURL
-        const userUid = user?.uid;
-        const userProfile = user?.photoURL;
-        const username = user?.displayName;
-
-        setProfile(userProfile);
-        setGoogleAuthor(username);
-        setUserId(userUid);
-      }
-    });
-  }, [profile]);
 
   // Checking firestore
   useEffect(() => {
@@ -224,10 +208,27 @@ const AddBlogPost = () => {
     }
   }, [userId, author]);
 
+  // Checking Authentication For Signin with Google Account
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Accessing the uid and photoURL
+        const userUid = user?.uid;
+        const userProfile = user?.photoURL;
+        const username = user?.displayName;
+
+        // Check if userProfile is null or an empty string
+        setProfile(!userProfile ? author?.slice(0, 1) : userProfile);
+        setGoogleAuthor(username);
+        setUserId(userUid);
+      }
+    });
+  }, [profile, author]);
+
   // Checking date
   useEffect(() => {
     const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    const formattedDate = today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
     setDate(formattedDate);
   }, []);
 
