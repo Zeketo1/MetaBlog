@@ -116,12 +116,12 @@ const NavBar = () => {
           </div>
         </motion.div>
 
-        <div className="flex items-start gap-1">
+        <Link to="/" className="flex items-start gap-1">
           <img src={dark ? LogoS : LogoS2} alt="" className="h-[25px]" />
           <p className="text-[16px] font-semibold translate-y-[2px]">
             Meta<span className="font-serif">Blog</span>
           </p>
-        </div>
+        </Link>
         <div className="hidden lg:flex gap-5 text-[14px]">
           {options.map(({ option, link }, i) => (
             <p

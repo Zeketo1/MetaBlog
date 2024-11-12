@@ -17,6 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import Spinner from "../utils/spinner/Spinner";
+import Dashboard from "@/pages/Shadcn";
 
 const AppRoutes = () => {
   const [footer, setfooter] = useState(true);
@@ -81,6 +82,7 @@ const AppRoutes = () => {
             <Route path="/signup" element={<Signup setfooter={setfooter} />} />
           )}
           <Route path="*" element={<NotFound />} />
+          <Route path="/shadcn" element={<Dashboard />} />
         </Routes>
         {footer && <Footer />}
       </BrowserRouter>

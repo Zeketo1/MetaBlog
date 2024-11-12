@@ -85,3 +85,9 @@
 .auth__right {
   clip-path: polygon(30% 0, 100% 0, 100% 100%, 0% 100%);
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}

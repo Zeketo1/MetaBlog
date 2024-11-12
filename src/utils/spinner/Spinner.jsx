@@ -1,5 +1,5 @@
 import { useStore } from "eoion";
-import { ClipLoader } from "react-spinners";
+i 
 import store from "../../store/store";
 
 const Spinner = ({ size, height }) => {

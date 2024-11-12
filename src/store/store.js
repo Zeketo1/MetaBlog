@@ -3,7 +3,7 @@ import { createPersistentStore, createStore } from "eoion";
 const store = createPersistentStore("store", {
   dark: false,
   contentLoaded: [],
-});
+}); 
 
 export const store2 = createStore({
   skeletonCon: true,
@@ -13,6 +13,6 @@ export const store2 = createStore({
   blogsStoreFiltered: [],
   blogsStore: [],
   author: "",
-});
+}); 
 
 export default store;

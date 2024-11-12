@@ -14,14 +14,14 @@ import { CiImageOn } from "react-icons/ci";
 const AddBlogPost = () => {
   // Eoion
   const [dark] = useStore(store.subscribe("dark"));
-  
+
   // States
   const { setImageUrl, profile, setProfile } = useContext(blogContext);
   const [userId, setUserId] = useState("");
   const [userData, setUserData] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  
+
   // Form states
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
