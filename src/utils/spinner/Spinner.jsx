@@ -1,6 +1,6 @@
 import { useStore } from "eoion";
-i 
 import store from "../../store/store";
+import { ClipLoader } from "react-spinners";
 
 const Spinner = ({ size, height }) => {
   const [dark] = useStore(store.subscribe("dark"));
