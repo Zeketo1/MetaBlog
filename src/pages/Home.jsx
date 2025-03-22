@@ -12,12 +12,12 @@ const Home = ({ setfooter }) => {
     setfooter(true);
   }, [setfooter]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
-    <div
-      className={`transition duration-500 ${
-        dark && "bg-[#242535]"
-      } `}
-    >
+    <div className={`transition duration-500 ${dark && "bg-[#242535]"} `}>
       <AddBlogbtn />
       <Banner />
       <BlogsList />
