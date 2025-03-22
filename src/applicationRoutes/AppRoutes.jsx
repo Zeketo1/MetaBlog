@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Home from "../pages/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import NavBar from "../common/NavBar";
@@ -70,7 +70,7 @@ const AppRoutes = () => {
         <ToastContainer />
         <Routes>
           <Route path="/" element={<Home setfooter={setfooter} />} />
-          <Route path="/aboutus" element={<Aboutus />} />
+          <Route path="/about" element={<Aboutus />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/:id" element={<BlogDetails />} />

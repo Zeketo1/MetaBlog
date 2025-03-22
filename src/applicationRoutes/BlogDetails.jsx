@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { blogContext } from "../context/BlogContextProvider";
 import { IoPerson } from "react-icons/io5";
@@ -20,23 +20,23 @@ const BlogDetails = () => {
 
   const [imageUrl, setImageUrl] = useState([]);
 
+  useEffect(() => {
   const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"];
 
-  const fetchImages = () => {
-    listAll(ref(imageDB, `Images`)).then((fireimages) => {
-      fireimages.items.forEach((item) => {
-        getDownloadURL(item).then((downloadURL) => {
-          if (imageExtensions.some((ext) => downloadURL.includes(ext))) {
-            setImageUrl((prev) => [...prev, downloadURL]);
-          }
+    const fetchImages = () => {
+      listAll(ref(imageDB, `Images`)).then((fireimages) => {
+        fireimages.items.forEach((item) => {
+          getDownloadURL(item).then((downloadURL) => {
+            if (imageExtensions.some((ext) => downloadURL.includes(ext))) {
+              setImageUrl((prev) => [...prev, downloadURL]);
+            }
+          });
         });
       });
-    });
-  };
+    };
 
-  useEffect(() => {
     fetchImages();
-  }, [blogs]);
+  }, []);
 
   return (
     <div

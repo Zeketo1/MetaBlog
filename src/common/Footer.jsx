@@ -1,13 +1,12 @@
-import React, { useContext } from "react";
 import { CiMail } from "react-icons/ci";
 import { LogoS, LogoS2 } from "..";
-import { blogContext } from "../context/BlogContextProvider";
 import { useStore } from "eoion";
 import store from "../store/store";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [dark] = useStore(store.subscribe("dark"));
-  const quicklinks = ["Home", "About", "Blog", "Archived", "Author", "Contact"];
+  const quicklinks = ["Home", "About", "Blogs", "Contact"];
   const category = [
     "Lifestyle",
     "Technology",
@@ -28,10 +27,10 @@ const Footer = () => {
             <div className="mb-4">
               <h1 className="text-[17px] font-semibold mb-3">About</h1>
               <p className="opacity-80 text-[13px] sm:text-[15px] w-[300px]">
-                We're a blog dedicated to sharing insights and stories on
-                various topics. Whether you're here to learn, explore, or simply
-                enjoy a good read, we're glad you're with us. Thanks for being
-                part of our journey!
+                We&apos;re a blog dedicated to sharing insights and stories on
+                various topics. Whether you&apos;re here to learn, explore, or
+                simply enjoy a good read, we&apos;re glad you&apos;re with us.
+                Thanks for being part of our journey!
               </p>
             </div>
             <div className="font-semibold">
@@ -53,9 +52,13 @@ const Footer = () => {
             <h1 className="text-[17px] font-semibold mb-3">Quick Link</h1>
             <div className="flex flex-col gap-1 text-[13px] sm:text-[15px]">
               {quicklinks.map((link, i) => (
-                <p key={i} className="opacity-80">
+                <Link
+                  to={i === 0 ? "/" : link.toLowerCase()}
+                  key={i}
+                  className="opacity-80"
+                >
                   {link}
-                </p>
+                </Link>
               ))}
             </div>
           </div>

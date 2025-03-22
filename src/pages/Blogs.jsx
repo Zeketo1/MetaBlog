@@ -117,7 +117,9 @@ const Blogs = () => {
                       {title}
                     </p>
                     <div className="flex items-center text-[13px] justify-around">
-                      <div className="w-[40px] h-[40px] bg-blue-900 rounded-[50%]" />
+                      <div className="flex items-center justify-center w-[40px] h-[40px] bg-blue-900 rounded-[50%]">
+                        {`${name.slice(0, 1).toUpperCase()}`}
+                      </div>
                       <p>{name}</p>
                       <p>{date}</p>
                     </div>

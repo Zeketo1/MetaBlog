@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LogoS, LogoS2 } from "..";
 import { BiSearch } from "react-icons/bi";
 import { LuSunDim } from "react-icons/lu";
@@ -39,7 +39,7 @@ const NavBar = () => {
   const options = [
     { option: "Home", link: "/" },
     { option: "Blog", link: "/blogs" },
-    { option: "About", link: "/aboutus" },
+    { option: "About", link: "/about" },
     { option: "Contact", link: "/contact" },
     { option: "Dark Mode" },
     { option: "Logout" },
@@ -64,7 +64,7 @@ const NavBar = () => {
     } else {
       setGoogleImg(false);
     }
-  }, [profile, author, userId]);
+  }, [profile, author, userId, setProfile]);
 
   useEffect(() => {
     if (userId) {
@@ -85,7 +85,7 @@ const NavBar = () => {
       // Cleanup the listener on unmount
       return () => unsubscribe();
     }
-  }, [author, userId]);
+  }, [userId, googleAuthor]);
 
   console.log(profile);
 
@@ -94,7 +94,7 @@ const NavBar = () => {
       <div
         className={` h-[10dvh] shadow-lg transition duration-500 px-2 py-3 z-10 ${
           dark ? "bg-[#242535] text-white" : "bg-white text-black"
-        } flex items-center font-poppins sticky top-0 right-0 justify-between`}
+        } flex items-center sticky top-0 right-0 justify-between`}
       >
         <motion.div
           initial={{ x: 700 }}
@@ -134,7 +134,7 @@ const NavBar = () => {
           ))}
         </div>
         <div className="flex gap-4 items-center">
-          <form
+          {/* <form
             className={`border-b items-center hidden sm:flex ${
               dark ? "border-b-[#1A1814] " : "border-b-gray-200 "
             } pr-2`}
@@ -154,7 +154,7 @@ const NavBar = () => {
                 )
               }
             />
-          </form>
+          </form> */}
           {/* {userActive && googleImg && (
             <img
               src={profile}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Banner from "../components/Home/Banner";
 import BlogsList from "../components/Home/BlogsList";
 import AddBlogbtn from "../utils/AddBlogbtn";
@@ -10,11 +10,11 @@ const Home = ({ setfooter }) => {
 
   useEffect(() => {
     setfooter(true);
-  }, []);
+  }, [setfooter]);
 
   return (
     <div
-      className={`transition duration-500 font-poppins ${
+      className={`transition duration-500 ${
         dark && "bg-[#242535]"
       } `}
     >

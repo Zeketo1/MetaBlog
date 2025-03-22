@@ -1,8 +1,5 @@
-import React, { useContext } from "react";
-import { AiFillInstagram } from "react-icons/ai";
-import { BsTwitterX } from "react-icons/bs";
+import { AiFillInstagram } from "react-icons/ai";import { BsTwitterX } from "react-icons/bs";
 import { FaFacebook, FaLinkedin } from "react-icons/fa";
-import { blogContext } from "../../context/BlogContextProvider";
 import Team1 from "../../assets/Images/Aboutus/Team/team1.png";
 import Team2 from "../../assets/Images/Aboutus/Team/team2.png";
 import Team3 from "../../assets/Images/Aboutus/Team/team3.png";

@@ -10,7 +10,7 @@ const Aboutus = () => {
   }, []);
   
   return (
-    <div className="font-poppins">
+    <div>
       <Title />
       <Banner />
       <Lifestyle />

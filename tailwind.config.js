@@ -12,7 +12,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        poppins: ["Poppins sans-serif"],
+        poppins: ["Raleway", "sans-serif"],
       },
       backgroundImage: {
         bannerBg: "url('./assets/Images/Homepage/Banner.png')",

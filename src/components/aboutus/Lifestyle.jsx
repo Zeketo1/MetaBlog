@@ -1,4 +1,3 @@
-import React, { useContext } from "react";
 import { Hands, Teamwork } from "../..";
 import store from "../../store/store";
 import { useStore } from "eoion";

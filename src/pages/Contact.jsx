@@ -14,7 +14,7 @@ const Contact = () => {
     <div
       className={`transition duration-500 flex flex-col ${
         dark ? "bg-[#242535] text-white" : "bg-white text-black"
-      } text-center gap-10 py-10 items-center font-poppins`}
+      } text-center gap-10 py-10 items-center`}
     >
       <div className="flex flex-col gap-2">
         <h1 className="text-[14px] font-semibold">CONTACT US</h1>
