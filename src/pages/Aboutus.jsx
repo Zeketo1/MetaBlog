@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Title from "../components/aboutus/Title";
 import Banner from "../components/aboutus/Banner";
 import Lifestyle from "../components/aboutus/Lifestyle";

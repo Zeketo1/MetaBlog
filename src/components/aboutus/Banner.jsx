@@ -14,40 +14,35 @@ const Banner = () => {
       >
         <div
           style={{ backgroundImage: `url("${banner}")` }}
-          className="h-[400px] w-full bg-cover"
+          className="h-[300px] lg:h-[400px] w-full bg-cover"
         ></div>
-        <div className="h-[400px] grid grid-cols-2 gap-10 place-content-center px-[10%]">
+        <div className="h-fit lg:h-[400px] grid grid-cols-1 lg:grid-cols-2 gap-10 place-content-center px-[10%]">
           <div className="flex flex-col gap-3 p-4">
             <h1 className="text-[14px] font-semibold opacity-80">
               OUR MISSION
             </h1>
             <h1 className="text-[22px] font-semibold">
-              Creating valuable content for <br /> creatives all around the
-              world
+              Empowering voices, connecting minds, celebrating stories.
             </h1>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do{" "}
-              <br />
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Non{" "}
-              <br />
-              blandit massa enim nec. Scelerisque viverra mauris in aliquam sem.{" "}
-              <br />
-              At risus viverra adipiscing at in tellus.
+              To empower individuals to share their unique stories and
+              perspectives, fostering a global community where creativity,
+              authenticity, and connection thrive. We exist to amplify voices,
+              spark meaningful dialogue, and celebrate the transformative power
+              of storytelling—one post, one reader, one writer at a time.
             </p>
           </div>
           <div className="flex flex-col gap-3 p-4">
             <h1 className="text-[14px] font-semibold opacity-80">OUR VISION</h1>
             <h1 className="text-[22px] font-semibold">
-              A platform that empowers <br /> individuals to improve
+              A world united by the stories we dare to share.
             </h1>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do{" "}
-              <br />
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Non{" "}
-              <br />
-              blandit massa enim nec. Scelerisque viverra mauris in aliquam sem.{" "}
-              <br />
-              At risus viverra adipiscing at in tellus.
+              To create a world where every person has the courage and platform
+              to express themselves freely, bridging divides and inspiring
+              change through the universal language of stories. We envision a
+              future where empathy grows from shared narratives, and human
+              connection outshines the noise of a fragmented digital age.
             </p>
           </div>
         </div>
